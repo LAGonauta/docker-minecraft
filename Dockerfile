@@ -1,4 +1,4 @@
-FROM alpine:3.11.6
+FROM arm64v8/openjdk:11-jre-slim
 LABEL maintainer='Chris Kankiewicz <Chris@ChrisKankiewicz.com>'
 
 # Minecraft version
@@ -15,7 +15,7 @@ ENV _JAVA_OPTIONS '-Xms256M -Xmx1024M'
 RUN mkdir -pv /opt/minecraft /etc/minecraft
 
 # Create non-root user
-RUN adduser -DHs /sbin/nologin minecraft
+RUN adduser --gecos "" --disabled-password --no-create-home --shell /sbin/nologin minecraft
 
 # Add the EULA file
 COPY files/eula.txt /etc/minecraft/eula.txt
@@ -25,10 +25,10 @@ COPY files/ops /usr/local/bin/ops
 RUN chmod +x /usr/local/bin/ops
 
 # Install dependencies, fetch Minecraft server jar file and chown files
-RUN apk add --update ca-certificates nss openjdk8-jre-base tzdata wget \
-    && wget -O /opt/minecraft/minecraft_server.jar ${JAR_URL} \
-    && apk del --purge wget && rm -rf /var/cache/apk/* \
-    && chown -R minecraft:minecraft /etc/minecraft /opt/minecraft
+RUN apt-get update && apt-get install -y ca-certificates libnss3 tzdata wget && \
+    wget -O /opt/minecraft/minecraft_server.jar ${JAR_URL} && \
+    apt-get remove -y --purge wget && rm -rf /var/lib/apt/lists/* && \
+    chown -R minecraft:minecraft /etc/minecraft /opt/minecraft
 
 # Define volumes
 VOLUME /etc/minecraft
