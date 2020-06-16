@@ -31,6 +31,7 @@ RUN apt-get update && apt-get install -y ca-certificates libnss3 tzdata wget && 
     apt-get remove -y --purge wget && rm -rf /var/lib/apt/lists/* && \
     java -jar /minecraft-forge/forge-installer.jar --installServer /opt/minecraft && \
     rm -r /minecraft-forge && \
+    mv /opt/minecraft/forge-${MC_VERSION}-${FORGE_VERSION}.jar /opt/minecraft/forge.jar && \
     chown -R minecraft:minecraft /etc/minecraft /opt/minecraft
 
 # Define volumes
@@ -44,9 +45,6 @@ USER minecraft
 
 # Set the working dir
 WORKDIR /etc/minecraft
-
-ENV MC_VERSION ${MC_VERSION}
-ENV FORGE_VERSION ${FORGE_VERSION}
 
 # Default run command
 CMD ["java", "-jar", "/opt/minecraft/forge-${MC_VERSION}-${FORGE_VERSION}.jar", "nogui"]
