@@ -47,4 +47,4 @@ USER minecraft
 WORKDIR /etc/minecraft
 
 # Default run command
-CMD ["java", "-jar", "/opt/minecraft/forge-${MC_VERSION}-${FORGE_VERSION}.jar", "nogui"]
+CMD ["java", "-jar", "/opt/minecraft/forge.jar", "nogui"]
