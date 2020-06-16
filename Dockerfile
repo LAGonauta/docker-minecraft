@@ -45,5 +45,8 @@ USER minecraft
 # Set the working dir
 WORKDIR /etc/minecraft
 
+ENV MC_VERSION ${MC_VERSION}
+ENV FORGE_VERSION ${FORGE_VERSION}
+
 # Default run command
 CMD ["java", "-jar", "/opt/minecraft/forge-${MC_VERSION}-${FORGE_VERSION}.jar", "nogui"]
