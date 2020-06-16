@@ -3,16 +3,17 @@ LABEL maintainer='Chris Kankiewicz <Chris@ChrisKankiewicz.com>'
 
 # Minecraft version
 ARG MC_VERSION=1.15.2
-ARG MC_JAR_SHA1=bb2b6b1aefcd70dfd1892149ac3a215f6c636b07
+ARG FORGE_VERSION=31.2.0
 
 # Set jar file URL
-ARG JAR_URL=https://launcher.mojang.com/v1/objects/${MC_JAR_SHA1}/server.jar
+ARG FORGE_INSTALLER_JAR_URL=https://files.minecraftforge.net/maven/net/minecraftforge/forge/${MC_VERSION}-${FORGE_VERSION}/forge-${MC_VERSION}-${FORGE_VERSION}-installer.jar
 
 # Set default JVM options
 ENV _JAVA_OPTIONS '-Xms256M -Xmx1024M'
 
 # Create Minecraft directories
 RUN mkdir -pv /opt/minecraft /etc/minecraft
+RUN mkdir -pv /minecraft-forge
 
 # Create non-root user
 RUN adduser --gecos "" --disabled-password --no-create-home --shell /sbin/nologin minecraft
@@ -28,6 +29,8 @@ RUN chmod +x /usr/local/bin/ops
 RUN apt-get update && apt-get install -y ca-certificates libnss3 tzdata wget && \
     wget -O /opt/minecraft/minecraft_server.jar ${JAR_URL} && \
     apt-get remove -y --purge wget && rm -rf /var/lib/apt/lists/* && \
+    java -jar /minecraft-forge/forge-${MC_VERSION}-${FORGE_VERSION}-installer.jar --installServer /opt/minecraft && \
+    rm -r /minecraft-forge && \
     chown -R minecraft:minecraft /etc/minecraft /opt/minecraft
 
 # Define volumes
@@ -43,4 +46,4 @@ USER minecraft
 WORKDIR /etc/minecraft
 
 # Default run command
-CMD ["java", "-jar", "/opt/minecraft/minecraft_server.jar", "nogui"]
+CMD ["java", "-jar", "/opt/minecraft/forge-${MC_VERSION}-${FORGE_VERSION}.jar", "nogui"]
