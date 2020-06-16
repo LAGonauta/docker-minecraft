@@ -27,9 +27,9 @@ RUN chmod +x /usr/local/bin/ops
 
 # Install dependencies, fetch Minecraft server jar file and chown files
 RUN apt-get update && apt-get install -y ca-certificates libnss3 tzdata wget && \
-    wget -O /opt/minecraft/minecraft_server.jar ${JAR_URL} && \
+    wget -O /minecraft-forge/forge-installer.jar ${FORGE_INSTALLER_JAR_URL} && \
     apt-get remove -y --purge wget && rm -rf /var/lib/apt/lists/* && \
-    java -jar /minecraft-forge/forge-${MC_VERSION}-${FORGE_VERSION}-installer.jar --installServer /opt/minecraft && \
+    java -jar /minecraft-forge/forge-installer.jar --installServer /opt/minecraft && \
     rm -r /minecraft-forge && \
     chown -R minecraft:minecraft /etc/minecraft /opt/minecraft
 
