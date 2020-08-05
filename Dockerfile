@@ -2,8 +2,8 @@ FROM arm64v8/openjdk:11-jre-slim
 LABEL maintainer='Chris Kankiewicz <Chris@ChrisKankiewicz.com>'
 
 # Minecraft version
-ARG MC_VERSION=1.15.2
-ARG FABRIC_VERSION=0.5.2.40
+ARG MC_VERSION=1.16.1
+ARG FABRIC_VERSION=0.6.1.45
 
 # Set default JVM options
 ENV _JAVA_OPTIONS '-Xms256M -Xmx1024M'
